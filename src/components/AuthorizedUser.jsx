@@ -1,7 +1,7 @@
 import React from "react";
 import { FlatList, View, StyleSheet, Text } from "react-native";
 import RepositoryItem from "./RepositoryItem";
-import useRepositories from "../hooks/useRepositories";
+import useAuthorizedUser from "../hooks/useAuthorizedUser";
 
 const styles = StyleSheet.create({
   separator: {
@@ -13,12 +13,12 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const renderItem = ({ item }) => <RepositoryItem item={item} />;
 
-const RepositoryList = () => {
-  const { repositories, loading } = useRepositories();
+const AuthorizedUser = () => {
+  const { authorizedUser, loading } = useAuthorizedUser();
 
-  if (!loading && repositories) {
-    const repositoryNodes = repositories
-      ? repositories.edges.map((edge) => edge.node)
+  if (!loading && authorizedUser) {
+    const repositoryNodes = authorizedUser
+      ? authorizedUser.reviews.edges.map((edge) => edge.node.repository)
       : [];
     return (
       <FlatList
@@ -36,4 +36,4 @@ const RepositoryList = () => {
   );
 };
 
-export default RepositoryList;
+export default AuthorizedUser;

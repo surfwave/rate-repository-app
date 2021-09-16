@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useRef } from "react";
 import { StyleSheet, View } from "react-native";
 import { Route, Switch, Redirect } from "react-router-native";
 
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
+import SignOut from "./Signout";
 import AppBar from "./AppBar";
+import AuthorizedUser from "./AuthorizedUser";
 import theme from "../theme";
 
 const styles = StyleSheet.create({
@@ -16,15 +18,26 @@ const styles = StyleSheet.create({
 });
 
 const Main = () => {
+  const appBarRef = useRef();
+  const refreshAppBar = () => {
+    appBarRef.current.changeIsRefreshed();
+  };
+
   return (
     <View style={styles.container}>
-      <AppBar />
+      <AppBar ref={appBarRef} />
       <Switch>
         <Route path="/" exact>
           <RepositoryList />
         </Route>
         <Route path="/signin" exact>
-          <SignIn />
+          <SignIn refresh={refreshAppBar} />
+        </Route>
+        <Route path="/signout" exact>
+          <SignOut refresh={refreshAppBar} />
+        </Route>
+        <Route path="/me" exact>
+          <AuthorizedUser />
         </Route>
         <Redirect to="/" />
       </Switch>

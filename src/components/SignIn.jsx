@@ -5,6 +5,8 @@ import * as yup from "yup";
 
 import FormikTextInput from "./FormikTextInput";
 import Text from "./Text";
+import useSignIn from "../hooks/useSignIn";
+import { useHistory } from "react-router-dom";
 
 const styles = StyleSheet.create({
   container: {
@@ -77,9 +79,24 @@ const SignInForm = ({ onSubmit }) => {
   );
 };
 
-const SignIn = () => {
-  const onSubmit = (values) => {
-    console.log(values);
+const SignIn = ({ refresh }) => {
+  const [signIn, data] = useSignIn();
+  const history = useHistory();
+
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+
+    try {
+      await signIn({ username, password });
+      if (data) {
+        console.log("返回的验证信息:", data);
+        console.log("跳转到登陆用户主页");
+        refresh();
+        history.push("/me");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

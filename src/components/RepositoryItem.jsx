@@ -25,7 +25,7 @@ const RepositoryItem = ({ item }) => {
     personContainer: {
       flexDirection: "row",
       justifyContent: "flex-start",
-      height: 60,
+      height: 80,
       marginBottom: 10,
     },
     nameAndDescContainer: {
